@@ -44,16 +44,18 @@ Alerts are triggered once per bar when a new pattern is confirmed.
 
 ## 📌 Usage Tips
 
-- Works best on timeframes H1 and above
+- Works on all timeframes with less noise on H1 and above
 - Combine with volume or trend indicators for confirmation
 - Use triangle logic to anticipate breakout zones near PCP clusters
 
 ## 🛠️ Installation
 
-1. Copy the Pine Script code into TradingView’s Pine Editor
-2. Add the script to your chart
-3. Configure settings via the indicator panel
+1. Locate the file [`pcp_indicator.pine`](https://github.com/amoakoh22/Pivot-Candlestick-Pattern-PCP-Indicator/blob/main/pcp_indicator.pine) in this repository  
+2. Open [TradingView](https://www.tradingview.com/) and navigate to the **Pine Editor**
+3. Copy and paste the contents of `pcp_indicator.pine` into the editor
+4. Click **Add to Chart**
+5. Customize settings via the indicator panel to suit your strategy
 
 ## 📬 Author
 
-Developed by **Samuel Amoakoh**, a technical founder and financial engineering candidate passionate about blending geometric insight with market structure.
+Developed by **Samuel Amoakoh**, a data scientist, algorithmic and financial engineering candidate passionate about blending geometric insight, market structure and Agentic processes.
