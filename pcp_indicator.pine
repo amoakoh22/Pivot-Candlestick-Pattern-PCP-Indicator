@@ -1,0 +1,42 @@
+//@version=6
+indicator("Pivot Candlestick Pattern (PCP) - Samuel Amoakoh", overlay=true, max_labels_count=500, max_bars_back=500)
+
+// === INPUT SETTINGS ===
+// Alert Settings
+alertOnBullishPCP = input.bool(true, title="Enable Alert: Bullish PCP", group="Alert Settings")
+alertOnBearishPCP = input.bool(true, title="Enable Alert: Bearish PCP", group="Alert Settings")
+
+// Visual Settings - Bullish
+bullishPCPColor = input.color(color.rgb(38, 166, 154), title="Bullish PCP Color", group="Visual Settings", inline="bullish_visuals")
+bullishPCPText = input.string("▲ Bullish PCP", title="Bullish PCP Label Text", group="Visual Settings", inline="bullish_visuals")
+bullishPCPTextColor = input.color(color.white, title="Bullish PCP Text Color", group="Visual Settings", inline="bullish_visuals")
+
+// Visual Settings - Bearish
+bearishPCPColor = input.color(color.red, title="Bearish PCP Color", group="Visual Settings", inline="bearish_visuals")
+bearishPCPText = input.string("▼ Bearish PCP", title="Bearish PCP Label Text", group="Visual Settings", inline="bearish_visuals")
+bearishPCPTextColor = input.color(color.white, title="Bearish PCP Text Color", group="Visual Settings", inline="bearish_visuals")
+
+// === PCP LOGIC ===
+// Bullish PCP: middle bar has lower high and low than bars before and after
+isBullishPCP = bar_index >= 2 and high[1] < high[0] and high[1] < high[2] and low[1] < low[0] and low[1] < low[2]
+
+// Bearish PCP: middle bar has higher high and low than bars before and after
+isBearishPCP = bar_index >= 2 and high[1] > high[0] and high[1] > high[2] and low[1] > low[0] and low[1] > low[2]
+
+// Signal confirmed on bar after PCP completes
+bullishSignal = isBullishPCP and not isBullishPCP[1]
+bearishSignal = isBearishPCP and not isBearishPCP[1]
+
+// === PLOTTING LABELS ===
+if bullishSignal
+    label.new(bar_index[1], low[1], bullishPCPText, xloc=xloc.bar_index, yloc=yloc.belowbar, color=bullishPCPColor, textcolor=bullishPCPTextColor, style=label.style_label_up, size=size.small, tooltip=bullishPCPText + "\nPrice: " + str.tostring(low[1], "#.##"))
+
+if bearishSignal
+    label.new(bar_index[1], high[1], bearishPCPText, xloc=xloc.bar_index, yloc=yloc.abovebar, color=bearishPCPColor, textcolor=bearishPCPTextColor, style=label.style_label_down, size=size.small, tooltip=bearishPCPText + "\nPrice: " + str.tostring(high[1], "#.##"))
+
+// === ALERTS ===
+if alertOnBullishPCP and bullishSignal
+    alert("Bullish PCP detected on " + syminfo.ticker + " at " + timeframe.period + " timeframe", alert.freq_once_per_bar)
+
+if alertOnBearishPCP and bearishSignal
+    alert("Bearish PCP detected on " + syminfo.ticker + " at " + timeframe.period + " timeframe", alert.freq_once_per_bar)
